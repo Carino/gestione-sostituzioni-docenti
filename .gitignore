@@ -1,0 +1,25 @@
+# Ambienti virtuali
+venv/
+venv_intel/
+.env
+
+# Compilazione Python e cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Build e distribuzioni binarie
+build/
+dist/
+*.dmg
+*.pkg
+*.spec.bak
+
+# Database locale e file temporanei
+*.sqlite
+output.txt
+
+# File di sistema
+.DS_Store
+Thumbs.db

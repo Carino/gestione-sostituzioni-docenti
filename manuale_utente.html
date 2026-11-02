@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuale Utente - Gestione Sostituzioni 3.3</title>
+    <style>
+        :root {
+            --primary: #1565C0;
+            --primary-dark: #0D47A1;
+            --primary-light: #E3F2FD;
+            --accent: #2980B9;
+            --text: #2C3E50;
+            --text-muted: #555555;
+            --bg: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --border: #E0E0E0;
+            
+            /* Colori programma */
+            --col-compresenza: #B2DFDB;
+            --col-disp: #FFF9C4;
+            --col-pot: #FFE0B2;
+            --col-pay: #C8E6C9;
+            --col-scoperta: #FFCDD2;
+            --col-alt: #E1BEE7;
+            --col-coperta: #A5D6A7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .nav-index {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--primary);
+        }
+
+        .nav-index h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .nav-index ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px;
+        }
+
+        .nav-index a {
+            color: #2C3E50;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-index a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #34495E;
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: #4A5568;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 16px;
+            color: #4A5568;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .highlight-box {
+            background: #EBF8FF;
+            border-left: 4px solid #3182CE;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        .alert-box {
+            background: #FFF5F5;
+            border-left: 4px solid #E53E3E;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        .success-box {
+            background: #F0FFF4;
+            border-left: 4px solid #38A169;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .pill-compresenza { background-color: var(--col-compresenza); }
+        .pill-sostegno { background-color: var(--col-compresenza); }
+        .pill-disp { background-color: var(--col-disp); }
+        .pill-pot { background-color: var(--col-pot); }
+        .pill-pay { background-color: var(--col-pay); }
+        .pill-scoperta { background-color: var(--col-scoperta); }
+        .pill-alt { background-color: var(--col-alt); }
+        .pill-coperta { background-color: var(--col-coperta); }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: #F8F9FA;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .feature-item h4 {
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #718096;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        @media print {
+            body { background: white; }
+            .header { background: #1565C0 !important; color: white !important; }
+            .nav-index { display: none; }
+            .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>I.P.S.A.R. - I.P.S.E.O.A. Alberghiero Sassari</h1>
+        <p>Manuale Utente Ufficiale — Applicazione Gestione Sostituzioni Docenti</p>
+        <div class="version-badge">Versione 3.3 • Aggiornato al 31 Ottobre 2026</div>
+    </header>
+
+    <div class="container">
+
+        <!-- INDICE DEI CONTENUTI -->
+        <nav class="nav-index">
+            <h3>📖 Indice dei Contenuti</h3>
+            <ul>
+                <li><a href="#intro">1. Introduzione ed Obiettivi</a></li>
+                <li><a href="#interfaccia">2. Struttura dell'Interfaccia</a></li>
+                <li><a href="#flusso">3. Procedura Operativa Giornaliera</a></li>
+                <li><a href="#algoritmo">4. Logica di Assegnazione e Priorità</a></li>
+                <li><a href="#alternativa">5. Materia Alternativa e Religione</a></li>
+                <li><a href="#menu-interattivo">6. Menu Contestuale (Tasto Destro)</a></li>
+                <li><a href="#esportazione">7. Esportazione (Word, PDF, Excel)</a></li>
+                <li><a href="#database">8. Gestione Database e Persistenza</a></li>
+                <li><a href="#novita-v3">⭐ 9. Novità e Aggiornamenti Versione 3.3</a></li>
+            </ul>
+        </nav>
+
+        <!-- SEZIONE 1 -->
+        <section id="intro" class="card">
+            <h2>🏢 1. Introduzione ed Obiettivi</h2>
+            <p>
+                Il software <strong>Gestione Sostituzioni 3.3</strong> è stato progettato per automatizzare ed ottimizzare il processo quotidiano di sostituzione dei docenti assenti nelle istituzioni scolastiche.
+            </p>
+            <p>
+                Attraverso l'elaborazione incrociata degli orari curricolari, dei docenti di potenziamento, delle compresente, delle ore a disposizione e della materia alternativa, l'applicazione individua istantaneamente le classi scoperte e propone la migliore soluzione di copertura, garantendo equità nelle assegnazioni e riducendo al minimo i costi per ore a pagamento.
+            </p>
+            <div class="highlight-box">
+                <strong>Principali vantaggi operativi:</strong>
+                <ul>
+                    <li>Risparmio dell'80% del tempo nell'elaborazione giornaliera delle supplenze.</li>
+                    <li>Assegnazione trasparente ed equa tramite algoritmo <em>round-robin</em>.</li>
+                    <li>Nessun rischio di doppie assegnazioni o sovrapposizioni orarie.</li>
+                    <li>Esportazione professionale per foglio firme docenti e registro.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SEZIONE 2 -->
+        <section id="interfaccia" class="card">
+            <h2>🖥️ 2. Struttura dell'Interfaccia</h2>
+            <p>L'interfaccia grafica si sviluppa su un'unica schermata ergonomica, articolata in tre aree principali:</p>
+            
+            <h3>A. Area Caricamento Dati (6 Riquadri Superiori)</h3>
+            <p>Permette di caricare e consultare i file CSV contenenti l'orario scolastico:</p>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>1. Orario Generale</h4>
+                    <p>Orario curricolare di tutte le classi e dei rispettivi docenti.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>2. Orario Personale</h4>
+                    <p>Orario individuale dei docenti (ore frontali e disposizioni).</p>
+                </div>
+                <div class="feature-item">
+                    <h4>3. Materia Alternativa</h4>
+                    <p>Orario dei docenti incaricati delle attività alternative all'IRC.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>4. Potenziamento</h4>
+                    <p>Docenti con ore di potenziamento da utilizzare prioritariamente.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>5. Pagamento</h4>
+                    <p>Docenti disponibili a effettuare ore eccedenti a pagamento.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>6. Docenti Sostegno</h4>
+                    <p>Orario dei docenti di sostegno assegnati alle classi.</p>
+                </div>
+            </div>
+
+            <h3>B. Area Inserimento Giornaliero (con Menu a Tendina a Comparsa)</h3>
+            <p>I tre riquadri offrono una <strong>doppia modalità di immissione</strong>: digitazione manuale / copia-incolla libero e pratici <strong>menu a tendina a comparsa</strong> per aggiungere i dati con un clic, eliminando errori di digitazione e conflitti di omonimia:</p>
+            <ul>
+                <li><strong>Docenti Assenti (Box Rosso):</strong> Inserire l'elenco dei docenti assenti. Si può selezionare il docente dal menu a tendina e cliccare su <em>➕ Aggiungi</em> (oppure premere Invio): il programma inserisce automaticamente il nominativo abbreviato corretto.</li>
+                <li><strong>Permessi Brevi (Box Verde Acqua):</strong> Selezionare il docente dalla tendina e impostare l'intervallo delle ore (es. dalla 1ª alla 3ª ora) tramite i selettori orari, quindi cliccare su <em>➕ Aggiungi Permesso</em>. Il formato generato è <code>COGNOME ORA1 ORA2...</code>.</li>
+                <li><strong>Classi Assenti (Box Arancione):</strong> Selezionare la classe dal menu a tendina (estratto direttamente dall'Orario Generale) e cliccare su <em>➕ Aggiungi</em> per escluderla dall'orario del giorno (es. gite o visite guidate).</li>
+            </ul>
+
+            <h3>C. Barra di Controllo ed Elaborazione</h3>
+            <p>Contiene la selezione del <strong>Giorno</strong>, il campo opzionale <strong>Docente da Sostituire</strong> per filtrare una specifica richiesta, il pulsante verde <strong>PROCEDI</strong> e il pulsante rosso <strong>SVUOTA</strong>.</p>
+        </section>
+
+        <!-- SEZIONE 3 -->
+        <section id="flusso" class="card">
+            <h2>📋 3. Procedura Operativa Giornaliera</h2>
+            <ol>
+                <li><strong>Avvio del programma:</strong> All'apertura, l'applicazione carica automaticamente gli orari dal database e si presenta con le caselle giornaliere pulite e pronte.</li>
+                <li><strong>Selezionare il Giorno della settimana</strong> dal menu a tendina (es. <em>MARTEDÌ</em>).</li>
+                <li><strong>Inserire i Docenti Assenti:</strong> Digitare o incollare i cognomi dei docenti assenti nel box rosso.</li>
+                <li><strong>Inserire eventuali Permessi Brevi e Classi Assenti</strong> negli appositi riquadri.</li>
+                <li><strong>Cliccare su "PROCEDI":</strong> L'algoritmo elabora istantaneamente il quadro delle sostituzioni.</li>
+                <li><strong>Verificare la tabella:</strong> Controllare le assegnazioni e, se necessario, fare clic destro per modificare un sostituto o marcare un'ora come coperta.</li>
+                <li><strong>Esportare o Stampare:</strong> Cliccare su <em>Esporta Word</em>, <em>Anteprima Stampa (PDF)</em> o <em>Esporta Excel</em>.</li>
+            </ol>
+        </section>
+
+        <!-- SEZIONE 4 -->
+        <section id="algoritmo" class="card">
+            <h2>⚙️ 4. Logica di Assegnazione e Priorità</h2>
+
+            <h3>Fase preliminare: individuazione delle ore da coprire</h3>
+            <p>Per ogni docente assente il programma cerca le ore e le classi da sostituire in questo modo:</p>
+            <ul>
+                <li><strong>Riquadro 1 – Orario Generale (classi/compresenze):</strong> tutte le celle in cui compare il docente nel giorno scelto. Se una classe compare in due blocchi <code>CLASSE ...</code> (ad es. classe sdoppiata tra laboratorio di cucina e di sala), i due blocchi vengono uniti nello stesso orario della classe.</li>
+                <li><strong>Riquadro 2 – Orario Personale:</strong> integra l'orario generale. Le ore e le classi del docente presenti nell'orario personale, ma non trovate nell'orario generale, vengono comunque inserite tra le ore da coprire. L'orario personale <em>non</em> fornisce sostituti: serve solo a individuare le ore scoperte.</li>
+                <li><strong>Riquadro 3 – Materia Alternativa:</strong> se l'assente è un docente di alternativa, la sua ora viene gestita secondo le regole della sezione 5.</li>
+            </ul>
+
+            <h3>Ricerca del sostituto</h3>
+            <p>Per ciascuna ora scoperta il motore applica, nell'ordine, la seguente gerarchia di criteri:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Priorità</th>
+                        <th>Criterio di Copertura</th>
+                        <th>Colore Tabella</th>
+                        <th>Descrizione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>Compresenza (Riquadro 1)</td>
+                        <td><span class="tag-pill pill-compresenza">COMPRESENZA</span></td>
+                        <td>Altro docente curricolare già compresente nella stessa classe e ora, purché non assente, in permesso breve o impegnato nell'altro gruppo di una classe sdoppiata.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>Compresenza Sostegno (Riquadro 6)</td>
+                        <td><span class="tag-pill pill-sostegno">SOSTEGNO</span></td>
+                        <td>Docente di sostegno che, in quel giorno e a quell'ora, è già assegnato alla stessa classe. Viene usato solo se presente: se il docente di sostegno è tra gli assenti o in permesso breve, viene escluso. (Se invece la classe assegnata al docente di sostegno è assente, il docente viene liberato e reso disponibile come sostituto al livello 3).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>Disp. da Classe Assente</td>
+                        <td><span class="tag-pill pill-disp">DISP. CLASSE</span></td>
+                        <td>Docente liberato (sia curriculare sia di sostegno del Riquadro 6) perché la propria classe è assente (gita, stage, visite guidate, ecc.). Se sono disponibili più docenti liberati per la stessa ora, il prospetto assegna il primo e indica tra parentesi tutti gli altri: <code>DISP. DA CLASSE ASSENTE: DOCENTE1 (altri: DOCENTE2, ...)</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>Potenziamento (Round-Robin, Riquadro 4)</td>
+                        <td><span class="tag-pill pill-pot">POTENZIAMENTO</span></td>
+                        <td>Docente di potenziamento libero a quell'ora, selezionato equamente in base al minor utilizzo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Ore a Pagamento (Riquadro 5)</td>
+                        <td><span class="tag-pill pill-pay">PAGAMENTO</span></td>
+                        <td>Docente con disponibilità per ore eccedenti a pagamento, non già assegnato alla stessa ora.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>Classe Scoperta</td>
+                        <td><span class="tag-pill pill-scoperta">SCOPERTA</span></td>
+                        <td>Nessun docente disponibile (ora da vigilare o gestire in autonomia).</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Nota sul sostegno:</strong> i docenti di sostegno assenti non generano una richiesta di sostituzione se il docente curricolare è presente; vengono usati unicamente come compresenza a copertura del curricolare assente.</p>
+
+            <h3>Regole di scrittura dei nomi dei docenti</h3>
+            <p>Il programma riconosce lo stesso docente solo se il nome è scritto <strong>nello stesso modo</strong> in tutti i file e nelle caselle giornaliere. Il confronto è esatto (maiuscole e minuscole non contano), ma spazi e nomi completi cambiano il risultato.</p>
+            <ul>
+                <li><strong>Un solo cognome, senza spazi:</strong> per i docenti senza omonimi scrivere solo il cognome (es. <code>Uras</code>, <code>Rossi</code>), ovunque compaia il docente.</li>
+                <li><strong>Omonimi:</strong> scrivere cognome e iniziale (o più lettere del nome) <em>attaccati</em> (es. <code>BassuI</code>, <code>BassuP</code>, <code>CuccuruL</code>, <code>CuccuruN</code>). Se due omonimi hanno la stessa iniziale usare più lettere (es. <code>CanuPa</code>, <code>CanuPi</code>).</li>
+                <li><strong>Cognomi composti o con prefisso</strong> (De Rosa, Dal Pozzo, Milleri Tatti): scriverli attaccati (<code>DeRosa</code>, <code>MilleriT</code>).</li>
+                <li><strong>Evitare cognome e nome separati da spazio</strong> (es. <code>Sini Francesca</code>): nell'orario generale, nel potenziamento e nei docenti a pagamento ogni parola viene letta come un docente diverso.</li>
+                <li><strong>Cognome + nome per esteso non equivale al solo cognome:</strong> <code>Uras Maria Vittoria</code> e <code>Uras</code> sono considerati due persone diverse. Se in un file il docente è indicato con il nome completo e nella casella degli assenti con il solo cognome, il docente non viene riconosciuto come assente e potrebbe essere proposto come sostituto.</li>
+            </ul>
+
+            <table>
+                <thead>
+                    <tr><th>Riquadro / Casella</th><th>Come viene letto il nome</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1 – Orario Generale / Compresenze</td><td>Parola per parola: ogni spazio crea un docente diverso.</td></tr>
+                    <tr><td>2 – Orario Personale</td><td>Intestazione <code>DOCENTE ...</code> letta per intero.</td></tr>
+                    <tr><td>3 – Materia Alternativa</td><td>Dopo la classe, il resto della cella è un unico nome.</td></tr>
+                    <tr><td>4 – Potenziamento e 5 – Pagamento</td><td>Parola per parola: ogni spazio crea un docente diverso.</td></tr>
+                    <tr><td>6 – Docenti Sostegno</td><td>Intestazione del docente letta per intero.</td></tr>
+                    <tr><td>Docenti Assenti / Da Sostituire</td><td>Testo digitato letto per intero.</td></tr>
+                    <tr><td>Permessi Brevi</td><td>Solo la prima parola (es. <code>ROSSI 2 3</code>).</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Consiglio:</strong> usare la stessa forma ovunque (es. solo cognome o cognome+iniziale attaccati) e verificare, dopo ogni modifica agli orari, che i nomi coincidano tra i sei file e le caselle giornaliere.</p>
+        </section>
+
+        <!-- SEZIONE 5 -->
+        <section id="alternativa" class="card">
+            <h2>✝️ 5. Materia Alternativa e Religione Cattolica</h2>
+            <p>La gestione della Materia Alternativa alla Religione segue le precise normative scolastiche:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>Caso 1: Manca solo Religione</h4>
+                    <p>Il docente di religione è assente, mentre quello di alternativa è presente. Viene trovato un sostituto per la classe e viene indicata la nota: <em>ALTERNATIVA: [Docente] (Non avvalentesi)</em>. La riga si colora di viola tenue <span class="tag-pill pill-alt">ALTERNATIVA</span> se la classe rimane scoperta.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Caso 2: Mancano sia Religione che Alternativa</h4>
+                    <p>Entrambi i docenti sono assenti. L'intera classe viene accorpata e viene individuato <strong>un solo docente in sostituzione</strong> per coprire l'intera aula, evitando duplicazioni inutili.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Caso 3: Manca solo Alternativa (Religione presente)</h4>
+                    <p>Il docente di religione fa lezione agli studenti avvalentesi. Il programma individua un docente in sostituzione destinato esclusivamente a vigilare gli <strong>alunni non avvalentesi</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE 6 -->
+        <section id="menu-interattivo" class="card">
+            <h2>🖱️ 6. Menu Contestuale (Tasto Destro) e Doppio Clic</h2>
+            <p>Facendo clic con il <strong>tasto destro del mouse</strong> (o <code>Control + Clic</code> su Mac) oppure facendo <strong>doppio clic</strong> su qualsiasi riga della tabella delle sostituzioni, si apre il menu contestuale con le seguenti azioni rapide:</p>
+            <ul>
+                <li><strong>✅ Segna come Coperta:</strong> Imposta la sostituzione su "COPERTA MANUALMENTE" e colora la riga di verde salvia chiaro <span class="tag-pill pill-coperta">COPERTA</span> (utile quando l'ora viene coperta internamente).</li>
+                <li><strong>✏️ Modifica Sostituto (o Doppio Clic):</strong> Apre una finestra di dialogo interattiva con un <strong>menu a tendina</strong> contenente tutti i docenti effettivamente disponibili a quell'ora (docenti liberati da classi assenti, sostegno, potenziamento, ore a pagamento). Consente di selezionare con un clic il docente preferito (es. scegliere il docente di sostegno invece del curriculare) o di inserire un nominativo personalizzato, aggiornando all'istante sia il testo sia il colore della riga.</li>
+                <li><strong>🗑️ Rimuovi Riga:</strong> Elimina la riga selezionata dalla tabella.</li>
+                <li><strong>📋 Copia Riga:</strong> Copia i dati della riga negli appunti di sistema per incollarli in altre applicazioni.</li>
+            </ul>
+        </section>
+
+        <!-- SEZIONE 7 -->
+        <section id="esportazione" class="card">
+            <h2>📄 7. Esportazione e Stampa (Word, PDF, Excel)</h2>
+            <p>I risultati possono essere esportati nei formati standard:</p>
+            
+            <h3>Esportazione Word (.docx) con Scelta Stile</h3>
+            <p>Cliccando su <strong>Esporta Word</strong> compare un'apposita finestra modale che permette di scegliere:</p>
+            <ul>
+                <li>🎨 <strong>A Colori:</strong> Replica fedelmente i colori delle righe (potenziamento, compresenza, alternativa, ecc.) e imposta l'intestazione blu istituzionale con testo bianco. Ideale per la condivisione digitale o la stampa a colori.</li>
+                <li>📄 <strong>Bianco e Nero (B/N):</strong> Genera un documento con sfondo bianco nitido e intestazioni in grigio chiaro sobrio, ideale per fotocopie o stampanti laser monocromatiche.</li>
+            </ul>
+
+            <h3>Anteprima di Stampa / PDF</h3>
+            <p>Apre direttamente il browser di sistema con il foglio pronto per la stampa o per il salvataggio in formato PDF, completo di intestazione dell'Istituto e tabella riassuntiva a 4 colonne.</p>
+
+            <h3>Esportazione Excel (.xlsx)</h3>
+            <p>Genera un foglio di calcolo formattato con i riepiloghi e tutte le righe di sostituzione per archivio digitale o analisi statistica.</p>
+        </section>
+
+        <!-- SEZIONE 8 -->
+        <section id="database" class="card">
+            <h2>💾 8. Gestione Database e Persistenza</h2>
+            <p>Tutti i dati degli orari, le preferenze di organico e lo storico delle statistiche vengono salvati automaticamente in un database SQLite locale (<code>sostituzioni_db.sqlite</code>):</p>
+            <ul>
+                <li><strong>Salvataggio Automatico:</strong> Gli orari caricati dai CSV rimangono memorizzati nel database, senza dover ricaricare i file ad ogni avvio.</li>
+                <li><strong>Esporta Database:</strong> Permette di creare un backup di sicurezza dell'archivio completo.</li>
+                <li><strong>Importa Database:</strong> Permette di ripristinare un archivio precedente su qualsiasi computer.</li>
+                <li><strong>Resetta Tutto (Menu File):</strong> Azzera completamente l'archivio cancellando orari e statistiche.</li>
+            </ul>
+        </section>
+
+        <!-- SEZIONE 9: NOVITÀ VERSIONE 3.3 -->
+        <section id="novita-v3" class="card" style="border: 2px solid var(--primary); background: #FCFDFE;">
+            <h2>⭐ 9. Novità e Aggiornamenti Versione 3.3</h2>
+            <p>La <strong>Versione 3.3 (31 Ottobre 2026)</strong> introduce le seguenti importanti novità funzionali:</p>
+            <ul>
+                <li><strong>Selezione con caselle di spunta (checkbox) e tasto "⚡ Applica a 'Da Sostituire'":</strong> direttamente dai riquadri dei <em>Docenti Assenti</em> e dei <em>Permessi Brevi</em>, un comodo popup con caselle di spunta permette di selezionare rapidamente i soli docenti che si desidera sostituire e inviarli con un clic nella casella <em>Docenti da Sostituire</em>, con opzioni rapide "Tutti" e "Nessuno".</li>
+                <li><strong>Correzione riepilogo "Docenti Fuori Sede" (Word, PDF, Excel):</strong> i docenti con permesso breve orario vengono ora correttamente esclusi dal conteggio e dalla colonna dei <em>Docenti Fuori Sede</em>, rimanendo collocati unicamente nella loro colonna di pertinenza <em>Permessi Brevi</em>.</li>
+                <li><strong>Menu a tendina a comparsa per l'immissione giornaliera:</strong> integrazione di selettori a tendina dinamici sotto ciascuna delle tre caselle (Docenti Assenti, Permessi Brevi e Classi Assenti).</li>
+                <li><strong>Risoluzione automatica delle omonimie:</strong> la selezione di un docente dalla tendina inserisce istantaneamente il nominativo abbreviato corretto riconosciuto dal motore (es. <code>BASSUI</code>, <code>BASSUP</code>, <code>CANUL</code>, <code>CANUPA</code>, <code>CANUP</code>, <code>SINI</code>, <code>SINIFRA</code>), azzerando ogni rischio di errore di battitura.</li>
+                <li><strong>Selettore rapido delle ore per i Permessi Brevi:</strong> scelta intuitiva dell'intervallo orario (da ora X a ora Y) con calcolo automatico della sequenza delle ore.</li>
+                <li><strong>Flessibilità totale:</strong> la modalità classica di scrittura e di copia-incolla rapido da circolari rimane pienamente operativa e coesiste con le tendine.</li>
+            </ul>
+
+            <h3>Novità introdotte con la Versione 3.1 (5 Ottobre 2026)</h3>
+            <ul>
+                <li><strong>Classi con due blocchi nell'orario generale:</strong> i blocchi <code>CLASSE ...</code> duplicati (classe sdoppiata tra laboratorio di cucina e di sala) vengono uniti nello stesso orario della classe, senza più cancellare le ore del primo blocco.</li>
+                <li><strong>Gruppi sdoppiati:</strong> i docenti dei due gruppi nella stessa ora non vengono proposti come compresenza l'uno dell'altro.</li>
+                <li><strong>Selezione file su macOS:</strong> nel filtro "Tutti i formati supportati" i file Excel non risultano più in grigio.</li>
+                <li><strong>Regole di scrittura dei nomi</strong> e priorità aggiornate con Orario Personale e Docenti Sostegno (sezione 4).</li>
+            </ul>
+
+            <h3>Novità introdotte con la Versione 3.0 (Settembre 2026)</h3>
+            <p>La <strong>Versione 3.0</strong> ha rappresentato un'evoluzione fondamentale del software, con significativi perfezionamenti architetturali, algoritmici e grafici:</p>
+
+            <div class="feature-grid">
+                <div class="feature-item" style="border-left: 4px solid #1565C0;">
+                    <h4>1. Esportazione Word A Colori / B/N</h4>
+                    <p>Aggiunta la possibilità di scegliere tra esportazione a colori (con evidenziazione fedele delle sostituzioni) e bianco/nero per la stampa tradizionale.</p>
+                </div>
+                <div class="feature-item" style="border-left: 4px solid #4CAF50;">
+                    <h4>2. Materia Alternativa Intelligente</h4>
+                    <p>Risolto il caso in cui il docente di alternativa era assente e religione presente: ora viene assegnato regolarmente il sostituto per i non avvalentesi, mantenendo un solo docente se mancano entrambi.</p>
+                </div>
+                <div class="feature-item" style="border-left: 4px solid #FF9800;">
+                    <h4>3. Grafica Tabella Anti-Taglio</h4>
+                    <p>Altezza riga portata a 52px con colonna espandibile: il testo su due righe per la materia alternativa non viene più troncato a metà.</p>
+                </div>
+                <div class="feature-item" style="border-left: 4px solid #9C27B0;">
+                    <h4>4. Avvio Pulito dell'Applicazione</h4>
+                    <p>Ad ogni apertura e riavvio del programma le caselle dei docenti assenti, permessi brevi e classi assenti si presentano completamente ripulite.</p>
+                </div>
+                <div class="feature-item" style="border-left: 4px solid #009688;">
+                    <h4>5. Menu Contestuale Tasto Destro</h4>
+                    <p>Aggiunta interazione rapida sulla tabella: Segna come Coperta, Modifica manuale del sostituto, Rimuovi riga e Copia.</p>
+                </div>
+                <div class="feature-item" style="border-left: 4px solid #E91E63;">
+                    <h4>6. Equità Round-Robin Potenziamento</h4>
+                    <p>Algoritmo bilanciato per l'assegnazione dei docenti di potenziamento, distribuendo uniformemente il carico di lavoro.</p>
+                </div>
+                <div class="feature-item" style="border-left: 4px solid #3F51B5;">
+                    <h4>7. Anti-Sovrapposizione Pagamento</h4>
+                    <p>Impedita l'assegnazione dello stesso docente su ore contemporanee a pagamento, con indicazione degli altri docenti idonei.</p>
+                </div>
+                <div class="feature-item" style="border-left: 4px solid #795548;">
+                    <h4>8. Editor CSV Anti-Troncamento</h4>
+                    <p>Preservazione integrale dei dati delle tabelle CSV anche oltre il limite massimo di visualizzazione a schermo, senza perdita di righe.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <p><strong>Gestione Sostituzioni 3.3</strong> — Software per Istituti Scolastici</p>
+        <p>© 2026 Mario Carta • Tutti i diritti riservati</p>
+    </footer>
+
+</body>
+</html>
